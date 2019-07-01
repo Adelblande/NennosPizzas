@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+
+import { CheckBox } from 'react-native-elements'
 
 import logoDrinks from '../assets/ic_drinks.png';
 
@@ -15,26 +17,42 @@ export default class Cart extends Component {
       fontWeight: 'bold'
     },
     headerRight: (
-      <TouchableOpacity onPress={() => navigation.navigate('Drinks')}>
+      <TouchableOpacity onPress={() => { }}>
         <Image style={{ marginHorizontal: 10 }} source={logoDrinks} />
       </TouchableOpacity>
     )
   });
 
   state = {
-    cart: []
+    cart: [],
   }
 
   async componentDidMount() {
-    console.log(this.props.navigation)
-    // const cart = this.props.navigation.getParam('cart');
-    // await this.setState({ cart });
+    const cart = this.props.navigation.getParam('cart');
+    await this.setState({ cart });
   }
+
   render() {
     return (
-      <View>
-        <Text>CART</Text>
-      </View>
+      <>
+        <ScrollView>
+          {
+            this.state.cart.map(pizza => (
+              <TouchableOpacity onPress={() => { }} key={pizza.name}>
+                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: 20 }}>
+                  <Text style={{ fontSize: 20, marginVertical: 10 }}>{pizza.name}</Text>
+                  <Text>{`$20`}</Text>
+                </View>
+              </TouchableOpacity>
+            ))
+          }
+        </ScrollView>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Success')} style={{ backgroundColor: 'red', height: 60 }}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 20, color: '#FFF', marginVertical: 10 }}>CHECKOUT</Text>
+          </View>
+        </TouchableOpacity>
+      </>
     );
   }
 }

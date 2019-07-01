@@ -8,6 +8,7 @@ import Cart from './components/Cart';
 import Drinks from './components/Drinks';
 import Create from './components/Create';
 import IngredientsAdded from './components/IngredientsAdded';
+import Success from './components/Success';
 
 
 
@@ -17,7 +18,8 @@ export default createAppContainer(
     Cart,
     Drinks,
     Create,
-    IngredientsAdded
+    IngredientsAdded,
+    Success
   }, {
       defaultNavigationOptions: {
         headerTintColor: 'red',

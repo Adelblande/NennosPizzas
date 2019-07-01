@@ -8,9 +8,8 @@ import logoCartButton from '../assets/ic_cart_button.png';
 import bgWood from '../assets/bg_wood.png';
 
 
-
-
 export default class Pizzas extends Component {
+
   static navigationOptions = ({ navigation }) => ({
     title: "NENNO'S PIZZAS",
     headerTitleStyle: {
@@ -21,7 +20,7 @@ export default class Pizzas extends Component {
       fontWeight: 'bold'
     },
     headerLeft: (
-      <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Cart', { cart: navigation.state.params.cart })}>
         <Image style={{ marginHorizontal: 10 }} source={logoCart} />
       </TouchableOpacity>
     ),
@@ -40,9 +39,11 @@ export default class Pizzas extends Component {
     modalVisible: false,
     cart: []
   }
+
   async componentDidMount() {
     const { data } = await api.get('/dokm7');
     const response = await api.get('/ozt3z');
+
     // data.pizzas.map(pizza => {
     //   pizza.ingredients.map(item => {
     //     response.data.map(ing => {
@@ -58,11 +59,10 @@ export default class Pizzas extends Component {
   }
 
 
-
   async addCart(pizza) {
     await this.setState({ cart: [...this.state.cart, pizza] })
+    this.props.navigation.setParams({ cart: [...this.state.cart] });
     this.setModalVisible(!this.state.modalVisible)
-    console.log(this.state.cart)
   }
 
   setModalVisible(visible) {
@@ -105,6 +105,7 @@ export default class Pizzas extends Component {
                       <TouchableOpacity onPress={() => this.addCart(pizza)}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 80, height: 60, borderRadius: 5, backgroundColor: 'yellow', marginHorizontal: 20, marginBottom: 10 }} >
                           <Image source={logoCartButton} style={{ width: 30, height: 30 }} />
+                          {/* <logoCartButton /> */}
                           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFF' }}>{`$${this.state.basePrice}`}</Text>
                         </View>
                       </TouchableOpacity>

@@ -46,7 +46,7 @@ export default class Create extends Component {
           }, 3000)
           }
           onRequestClose={() => {
-            Alert.alert('Problema com o modal.');
+            Alert.alert('Problemas com o modal.');
           }}>
           <View style={{ height: 30, opacity: 0.7, backgroundColor: 'red', alignItems: 'center' }}>
             <Text style={{ fontSize: 20, color: "#FFF", fontWeight: 'bold' }}>ADDED TO CART</Text>
