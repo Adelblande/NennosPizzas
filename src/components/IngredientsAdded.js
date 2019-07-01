@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, View, Text, ImageBackground, Image, ScrollView, Button, StatusBar } from 'react-native';
+import { Modal, View, Text, ImageBackground, Image, ScrollView, TouchableOpacity } from 'react-native';
 
 import api from '../services/api';
 
@@ -18,7 +18,8 @@ export default class IngredientsAdded extends Component {
   state = {
     pizza: {},
     ingredients: [],
-    modalVisible: false
+    modalVisible: false,
+    precoTotal: 0,
   }
   async componentDidMount() {
     const pizza = this.props.navigation.getParam('pizza')
@@ -28,6 +29,10 @@ export default class IngredientsAdded extends Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+  async somaTotal() {
+    await this.setState({ precoTotal: this.state.precoTotal + 5 })
+  }
+
   render() {
     return (
       <>
@@ -40,7 +45,7 @@ export default class IngredientsAdded extends Component {
           }, 3000)
           }
           onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
+            Alert.alert('Problemas com o modal.');
           }}>
           <View style={{ height: 30, opacity: 0.8, backgroundColor: 'red', alignItems: 'center' }}>
             <Text style={{ fontSize: 20, color: "#FFF", fontWeight: 'bold' }}>ADDED TO CART</Text>
@@ -58,18 +63,24 @@ export default class IngredientsAdded extends Component {
               <View style={{ flex: 1, flexDirection: 'column', marginBottom: 20 }}>
                 {
                   this.state.ingredients.map(item => (
-                    <View key={item.id} style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <Text style={{ marginHorizontal: 60, fontSize: 20 }}>{item.name}</Text>
-                      <Text style={{ marginHorizontal: 10, fontSize: 20 }}>{`$5`}</Text>
-                    </View>
+                    <TouchableOpacity key={item.id} onPress={() => this.somaTotal()}>
+                      <View key={item.id} style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Text style={{ marginHorizontal: 60, fontSize: 20 }}>{item.name}</Text>
+                        <Text style={{ marginHorizontal: 10, fontSize: 20 }}>{`$5`}</Text>
+                      </View>
+                    </TouchableOpacity>
                   ))
                 }
               </View>
             </View>
           </View>
         </ScrollView>
+        <TouchableOpacity onPress={() => this.setModalVisible(!this.state.modalVisible)} style={{ backgroundColor: 'yellow', height: 60 }}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 20, color: '#FFF' }}>ADD TO CART {`($${this.state.precoTotal})`}</Text>
+          </View>
+        </TouchableOpacity>
 
-        <Button title="ADD TO CART" color="yellow" onPress={() => this.setModalVisible(!this.state.modalVisible)} />
       </>
     );
   }

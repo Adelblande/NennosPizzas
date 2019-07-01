@@ -24,10 +24,11 @@ export default class Cart extends Component {
   state = {
     cart: []
   }
+
   async componentDidMount() {
+    console.log(this.props.navigation)
     // const cart = this.props.navigation.getParam('cart');
-    // await this.setState({ cart: cart });
-    console.log(this.state.cart)
+    // await this.setState({ cart });
   }
   render() {
     return (

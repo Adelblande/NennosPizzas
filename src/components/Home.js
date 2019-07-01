@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TouchableHighlight, Image, ScrollView, ImageBackground, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, ImageBackground, Modal } from 'react-native';
 
 import api from '../services/api';
 
@@ -21,7 +21,7 @@ export default class Pizzas extends Component {
       fontWeight: 'bold'
     },
     headerLeft: (
-      <TouchableOpacity onPress={() => navigation.navigate('Cart', { cart: [...this.state.cart] })}>
+      <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
         <Image style={{ marginHorizontal: 10 }} source={logoCart} />
       </TouchableOpacity>
     ),
@@ -31,47 +31,40 @@ export default class Pizzas extends Component {
       </TouchableOpacity>
     ),
   })
+
   state = {
     pizzas: [],
     ingredients: [],
     basePrice: null,
     ingrePizzas: [],
-    cart: [],
-    modalVisible: false
+    modalVisible: false,
+    cart: []
   }
   async componentDidMount() {
     const { data } = await api.get('/dokm7');
     const response = await api.get('/ozt3z');
-
     // data.pizzas.map(pizza => {
-    //   pizza.ingredients.map((item, index) => {
-    //     let ingPizza = response.data.filter(infoIng => {
-    //       return infoIng.id === item
-    //     })
-    //     const arrIngr = [pizza = Array()];
-    //     ingPizza.map(obj => {
-    //       arrIngr.pizza.push(obj.name)
-    //     })
-    //     console.log(arrIngr)
-    //     // pizza.ingredients.push(...strname);
+    //   pizza.ingredients.map(item => {
+    //     response.data.map(ing => {
+    //       if (item === ing.id) {
 
+    //       }
+    //     })
     //   })
-
     // })
 
-    this.setState({ basePrice: data.basePrice, pizzas: data.pizzas, ingredients: response.data })
-    // console.log(this.state)
+    await this.setState({ basePrice: data.basePrice, pizzas: data.pizzas, ingredients: response.data })
+    // console.log(arrIngr)
   }
 
-  openCart() {
-    console.log(this.props);
-    // this.props.navigation.navigate('Cart', { cart: cart })
-  }
+
+
   async addCart(pizza) {
     await this.setState({ cart: [...this.state.cart, pizza] })
     this.setModalVisible(!this.state.modalVisible)
     console.log(this.state.cart)
   }
+
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
@@ -79,22 +72,22 @@ export default class Pizzas extends Component {
   render() {
     return (
       <>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onShow={() => setTimeout(() => {
+            this.setState({ modalVisible: false })
+          }, 3000)
+          }
+          onRequestClose={() => {
+            Alert.alert('Problemas com o modal.');
+          }}>
+          <View style={{ height: 30, opacity: 0.8, backgroundColor: 'red', alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, color: "#FFF", fontWeight: 'bold' }}>ADDED TO CART</Text>
+          </View>
+        </Modal>
         <ScrollView>
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onShow={() => setTimeout(() => {
-              this.setState({ modalVisible: false })
-            }, 3000)
-            }
-            onRequestClose={() => {
-              Alert.alert('Problema no modal.');
-            }}>
-            <View style={{ height: 30, opacity: 0.8, backgroundColor: 'red', alignItems: 'center' }}>
-              <Text style={{ fontSize: 20, color: "#FFF", fontWeight: 'bold' }}>ADDED TO CART</Text>
-            </View>
-          </Modal>
           {
             this.state.pizzas.map(pizza => {
               return (
@@ -108,8 +101,8 @@ export default class Pizzas extends Component {
                   <View style={{ flex: 1, backgroundColor: '#FFF', opacity: 0.94, height: 80, zIndex: 1 }}>
                     <Text style={{ fontSize: 30, fontWeight: 'bold', marginHorizontal: 20 }}>{pizza.name}</Text>
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Text style={{ marginLeft: 20 }}>{'buceta'}</Text>
-                      <TouchableOpacity onPress={() => { this.addCart(pizza) }}>
+                      <Text style={{ marginLeft: 20 }}>{'Mussare, Banana'}</Text>
+                      <TouchableOpacity onPress={() => this.addCart(pizza)}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 80, height: 60, borderRadius: 5, backgroundColor: 'yellow', marginHorizontal: 20, marginBottom: 10 }} >
                           <Image source={logoCartButton} style={{ width: 30, height: 30 }} />
                           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFF' }}>{`$${this.state.basePrice}`}</Text>
