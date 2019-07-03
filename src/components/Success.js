@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StatusBar, TouchableOpacity } from 'react-nativ
 
 
 export default function Success() {
+
   return (
     <>
       <StatusBar hidden />

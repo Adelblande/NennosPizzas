@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 
-import { CheckBox } from 'react-native-elements'
+
 
 import logoDrinks from '../assets/ic_drinks.png';
 
@@ -9,18 +9,19 @@ import logoDrinks from '../assets/ic_drinks.png';
 export default class Cart extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: "CART",
+
     headerTitleStyle: {
       marginHorizontal: 90,
       fontSize: 20,
       alignItems: 'center',
       color: 'red',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     },
     headerRight: (
       <TouchableOpacity onPress={() => { }}>
         <Image style={{ marginHorizontal: 10 }} source={logoDrinks} />
       </TouchableOpacity>
-    )
+    ),
   });
 
   state = {
@@ -41,7 +42,7 @@ export default class Cart extends Component {
               <TouchableOpacity onPress={() => { }} key={pizza.name}>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: 20 }}>
                   <Text style={{ fontSize: 20, marginVertical: 10 }}>{pizza.name}</Text>
-                  <Text>{`$20`}</Text>
+                  <Text>{`$${pizza.valorPizza}`}</Text>
                 </View>
               </TouchableOpacity>
             ))

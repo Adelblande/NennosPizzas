@@ -24,7 +24,7 @@ export default class IngredientsAdded extends Component {
   async componentDidMount() {
     const pizza = this.props.navigation.getParam('pizza')
     const response = await api.get('/ozt3z');
-    this.setState({ pizza: pizza, ingredients: response.data })
+    this.setState({ pizza: pizza, ingredients: response.data, precoTotal: pizza.valorPizza })
   }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });

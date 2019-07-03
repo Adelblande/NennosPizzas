@@ -22,6 +22,7 @@ export default class Pizzas extends Component {
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.navigate('Cart', { cart: navigation.state.params.cart })}>
         <Image style={{ marginHorizontal: 10 }} source={logoCart} />
+
       </TouchableOpacity>
     ),
     headerRight: (
@@ -35,29 +36,40 @@ export default class Pizzas extends Component {
     pizzas: [],
     ingredients: [],
     basePrice: null,
-    ingrePizzas: [],
     modalVisible: false,
     cart: []
   }
 
   async componentDidMount() {
     const { data } = await api.get('/dokm7');
-    const response = await api.get('/ozt3z');
+    const { basePrice } = data
+    const res = await api.get('/ozt3z');
 
-    // data.pizzas.map(pizza => {
-    //   pizza.ingredients.map(item => {
-    //     response.data.map(ing => {
-    //       if (item === ing.id) {
+    data.pizzas.map(pizza => {
+      pizza.ingr = []
+      pizza.ingredients.map(item => {
+        const ingCom = res.data.filter(item2 => {
+          return item2.id === item
+        })
+        pizza.ingr.push(...ingCom)
+        // return false
+      })
 
-    //       }
-    //     })
-    //   })
-    // })
+      const valorPizza = pizza.ingr.reduce((ac, elem) => {
+        return ac + elem.price
+      }, basePrice)
 
-    await this.setState({ basePrice: data.basePrice, pizzas: data.pizzas, ingredients: response.data })
-    // console.log(arrIngr)
+      const stringIngredientes = pizza.ingr.reduce((ac, elem) => {
+        return ac + elem.name + ', '
+      }, '')
+
+      pizza.stringIngredientes = stringIngredientes.substr(0, stringIngredientes.length - 2) + '.';
+      pizza.valorPizza = valorPizza
+      // return false
+    })
+    await this.setState({ basePrice: basePrice, pizzas: data.pizzas, ingredients: res.data })
+    console.log(this.state)
   }
-
 
   async addCart(pizza) {
     await this.setState({ cart: [...this.state.cart, pizza] })
@@ -101,12 +113,11 @@ export default class Pizzas extends Component {
                   <View style={{ flex: 1, backgroundColor: '#FFF', opacity: 0.94, height: 80, zIndex: 1 }}>
                     <Text style={{ fontSize: 30, fontWeight: 'bold', marginHorizontal: 20 }}>{pizza.name}</Text>
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Text style={{ marginLeft: 20 }}>{'Mussare, Banana'}</Text>
+                      <Text style={{ marginLeft: 20, fontSize: 16 }}>{pizza.stringIngredientes}</Text>
                       <TouchableOpacity onPress={() => this.addCart(pizza)}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 80, height: 60, borderRadius: 5, backgroundColor: 'yellow', marginHorizontal: 20, marginBottom: 10 }} >
                           <Image source={logoCartButton} style={{ width: 30, height: 30 }} />
-                          {/* <logoCartButton /> */}
-                          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFF' }}>{`$${this.state.basePrice}`}</Text>
+                          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFF' }}>{`$${pizza.valorPizza}`}</Text>
                         </View>
                       </TouchableOpacity>
                     </View>
