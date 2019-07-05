@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Modal, View, Text, ImageBackground, ScrollView, TouchableOpacity } from 'react-native';
-import { CheckBox } from 'react-native-elements';
 
 import api from '../services/api';
 
