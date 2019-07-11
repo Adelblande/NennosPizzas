@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Modal, View, Text, ImageBackground, ScrollView, TouchableOpacity } from 'react-native';
+import { Modal, View, Text, ImageBackground, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 
 import api from '../services/api';
 
@@ -21,17 +22,31 @@ export default class Create extends Component {
     modalVisible: false,
     buttonDisable: false,
     precoTotal: 0,
+    checked: []
   }
   async componentDidMount() {
     const response = await api.get('/ozt3z');
-    await this.setState({ ingredients: response.data })
+    const check = []
+    response.data.map(ingred => {
+      check[ingred.name] = false
+    })
+
+    await this.setState({ ingredients: response.data, checked: check })
   }
   async setModalVisible(visible) {
     await this.setState({ modalVisible: visible });
   }
-  async somaTotal() {
-    await this.setState({ precoTotal: this.state.precoTotal + 5 })
+  async somaTotal(ingredient) {
+    let isIngredient = this.state.checked;
+    isIngredient[ingredient] = !isIngredient[ingredient];
+    if (isIngredient[ingredient] === true) {
+      await this.setState({ precoTotal: this.state.precoTotal + 5 })
+    } else {
+      await this.setState({ precoTotal: this.state.precoTotal - 5 })
+    }
+    await this.setState({ checked: isIngredient })
   }
+
 
   render() {
     return (
@@ -58,13 +73,23 @@ export default class Create extends Component {
             <ImageBackground source={bgWoodCreate} style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 300 }} />
             <View style={{ flex: 1, flexDirection: 'column' }}>
               <Text style={{ fontSize: 30, fontWeight: 'bold', marginHorizontal: 20, marginVertical: 20 }}>Ingredients</Text>
-              <View style={{ flex: 1, flexDirection: 'column', marginBottom: 20 }}>
+              <View style={{ flex: 1, flexDirection: 'column' }}>
 
                 {
                   this.state.ingredients.map(item => (
-                    <TouchableOpacity key={item.id} onPress={() => this.somaTotal()}>
-                      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ marginHorizontal: 60, fontSize: 20 }}>{item.name}</Text>
+                    <TouchableOpacity key={item.id} onPress={() => this.somaTotal(item.name)}>
+                      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <CheckBox
+                          iconType="material"
+                          iconStyle={{ marginVertical: 20 }}
+                          checkedIcon="done"
+                          uncheckedIcon="done"
+                          checkedColor="red"
+                          checked={this.state.checked[item.name]}
+                        // onPress={() => this.isIngredient(item.name)}
+                        />
+
+                        <Text style={{ fontSize: 20 }}>{item.name}</Text>
                         <Text style={{ marginHorizontal: 10, fontSize: 20 }}>{`$5`}</Text>
                       </View>
                     </TouchableOpacity>
