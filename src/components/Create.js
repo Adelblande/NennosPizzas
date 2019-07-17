@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, View, Text, ImageBackground, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { Modal, View, Text, ImageBackground, ScrollView, TouchableOpacity } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 import api from '../services/api';
@@ -7,7 +7,7 @@ import api from '../services/api';
 import bgWoodCreate from '../assets/bg_wood_create.png';
 
 export default class Create extends Component {
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     title: "CREATE",
     headerTitleStyle: {
       marginHorizontal: 80,

@@ -52,7 +52,6 @@ export default class Pizzas extends Component {
           return item2.id === item
         })
         pizza.ingr.push(...ingCom)
-        // return false
       })
 
       const valorPizza = pizza.ingr.reduce((ac, elem) => {
@@ -65,10 +64,8 @@ export default class Pizzas extends Component {
 
       pizza.stringIngredientes = stringIngredientes.substr(0, stringIngredientes.length - 2) + '.';
       pizza.valorPizza = valorPizza
-      // return false
     })
     await this.setState({ basePrice: basePrice, pizzas: data.pizzas, ingredients: res.data })
-    console.log(this.state)
   }
 
   async addCart(pizza) {
@@ -110,12 +107,20 @@ export default class Pizzas extends Component {
                     </ImageBackground>
                   </TouchableOpacity>
 
-                  <View style={{ flex: 1, backgroundColor: '#FFF', opacity: 0.94, height: 80, zIndex: 1 }}>
-                    <Text style={{ fontSize: 30, fontWeight: 'bold', marginHorizontal: 20 }}>{pizza.name}</Text>
-                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Text style={{ marginLeft: 20, fontSize: 16 }}>{pizza.stringIngredientes}</Text>
+                  <View style={{ flex: 1, backgroundColor: '#FFF', opacity: 0.94, zIndex: 1, height: 90 }}>
+                    <Text style={{ fontSize: 30, fontWeight: 'bold', marginHorizontal: 10 }}>{pizza.name}</Text>
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', marginLeft: 10, flexWrap: 'wrap' }}>
+                        {
+                          pizza.ingr.map(ingredient => (
+                            <Text key={ingredient.name} style={{ fontSize: 16 }}>
+                              {ingredient.name + ', '}
+                            </Text>
+                          ))
+                        }
+                      </View>
                       <TouchableOpacity onPress={() => this.addCart(pizza)}>
-                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 80, height: 60, borderRadius: 5, backgroundColor: 'yellow', marginHorizontal: 20, marginBottom: 10 }} >
+                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 75, height: 40, borderRadius: 5, backgroundColor: 'yellow', marginHorizontal: 10, marginBottom: 10 }} >
                           <Image source={logoCartButton} style={{ width: 30, height: 30 }} />
                           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFF' }}>{`$${pizza.valorPizza}`}</Text>
                         </View>
