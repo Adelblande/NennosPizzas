@@ -111,13 +111,7 @@ export default class Pizzas extends Component {
                     <Text style={{ fontSize: 30, fontWeight: 'bold', marginHorizontal: 10 }}>{pizza.name}</Text>
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', marginLeft: 10, flexWrap: 'wrap' }}>
-                        {
-                          pizza.ingr.map(ingredient => (
-                            <Text key={ingredient.name} style={{ fontSize: 16 }}>
-                              {ingredient.name + ', '}
-                            </Text>
-                          ))
-                        }
+                        <Text style={{ fontSize: 16 }}>{pizza.stringIngredientes}</Text>
                       </View>
                       <TouchableOpacity onPress={() => this.addCart(pizza)}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 75, height: 40, borderRadius: 5, backgroundColor: 'yellow', marginHorizontal: 10, marginBottom: 10 }} >
