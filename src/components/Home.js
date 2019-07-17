@@ -108,13 +108,13 @@ export default class Pizzas extends Component {
                   </TouchableOpacity>
 
                   <View style={{ flex: 1, backgroundColor: '#FFF', opacity: 0.94, zIndex: 1, height: 90 }}>
-                    <Text style={{ fontSize: 30, fontWeight: 'bold', marginHorizontal: 10 }}>{pizza.name}</Text>
+                    <Text style={{ fontSize: 25, fontWeight: 'bold', marginHorizontal: 10 }}>{pizza.name}</Text>
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', marginLeft: 10, flexWrap: 'wrap' }}>
                         <Text style={{ fontSize: 16 }}>{pizza.stringIngredientes}</Text>
                       </View>
                       <TouchableOpacity onPress={() => this.addCart(pizza)}>
-                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 75, height: 40, borderRadius: 5, backgroundColor: 'yellow', marginHorizontal: 10, marginBottom: 10 }} >
+                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: 75, height: 40, borderRadius: 5, paddingHorizontal: 10, backgroundColor: 'yellow', marginHorizontal: 10, marginBottom: 10 }} >
                           <Image source={logoCartButton} style={{ width: 30, height: 30 }} />
                           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFF' }}>{`$${pizza.valorPizza}`}</Text>
                         </View>
